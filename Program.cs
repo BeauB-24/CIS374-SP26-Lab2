@@ -8,9 +8,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        var data = BenchmarkRunner.Run<StringBenchmark>();
+        //var data = BenchmarkRunner.Run<StringBenchmark>();
 
-        //var data = BenchmarkRunner.Run<InsertKeyValueMapBenchmarks>();
+       var data = BenchmarkRunner.Run<HeightKeyValueMapBenchmarks>();
 
         // int n = 100;
         // var heightRandom = new HeightKeyValueMapBenchmarks(n, true);
@@ -18,7 +18,7 @@ class Program
         // double heightAVL = heightRandom.HeightOfAVLTree();
         // double heightRB = heightRandom.HeightOfRedBlackTree();
 
-        // System.Console.WriteLine($"Height (n={n})");
+        // System.Console.WriteLine($"Height (n={n})");-
         // System.Console.WriteLine($"BST: {heightBST}");
         // System.Console.WriteLine($"AVL: {heightAVL}");
         // System.Console.WriteLine($"Red-Black: {heightRB}");

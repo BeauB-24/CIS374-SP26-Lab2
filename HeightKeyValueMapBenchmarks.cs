@@ -1,27 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
 using DSA.DataStructures.Trees;
 
 namespace Lab1
 {
-	public class HeightKeyValueMapBenchmarks
-	{
-		public HeightKeyValueMapBenchmarks(int n, bool isInOrder)
-		{
-            IsInOrder = isInOrder;
-            N = n;
+    [MemoryDiagnoser]
+    [ShortRunJob]
+    public class HeightKeyValueMapBenchmarks
+    {
+        public enum KeyValueMapType { BST, AVL, RedBlack }
 
-		}
+        [Params(100, 1000, 10_000, 100_000)]
+        public int N { get; set; }
 
-        public enum KeyValueMapType { Dictionary, BST, AVL, RedBlack }
+        [Params(true, false)]
+        public bool IsInOrder { get; set; }
 
         public List<KeyValuePair<int, int>>? keyValuePairs;
-        public List<KeyValuePair<int, int>>? keyValuePairsShuffled;
 
-        
-        public readonly bool IsInOrder = false;
-        public readonly int N;
-        public readonly int NumberOfTimes = 100;
-
+        [GlobalSetup]
         public void Setup()
         {
             keyValuePairs = new List<KeyValuePair<int, int>>();
@@ -37,25 +35,26 @@ namespace Lab1
             }
         }
 
-        // This has the SOL seal of approval.
+        private int NumberOfTimes = 100;
+
+        [Benchmark]
         public double HeightOfBST()
         {
             int totalHeights = 0;
-            for(int i=0; i < NumberOfTimes; i++)
+            for (int i = 0; i < NumberOfTimes; i++)
             {
                 Setup();
                 var bst = new BinarySearchTreeMap<int, int>();
-                foreach(var kvp in keyValuePairs)
+                foreach (var kvp in keyValuePairs)
                 {
                     bst.Add(kvp.Key, kvp.Value);
                 }
-                //Console.WriteLine(bst.Height);
                 totalHeights += bst.Height;
             }
-
             return (double)totalHeights / NumberOfTimes;
         }
 
+        [Benchmark]
         public double HeightOfAVLTree()
         {
             int totalHeights = 0;
@@ -67,14 +66,12 @@ namespace Lab1
                 {
                     avlTree.Add(kvp.Key, kvp.Value);
                 }
-                //Console.WriteLine(avlTree.Height);    
                 totalHeights += avlTree.Height;
             }
-
             return (double)totalHeights / NumberOfTimes;
         }
 
-
+        [Benchmark]
         public double HeightOfRedBlackTree()
         {
             int totalHeights = 0;
@@ -86,13 +83,9 @@ namespace Lab1
                 {
                     redblackTree.Add(kvp.Key, kvp.Value);
                 }
-                //Console.WriteLine(redblackTree.Height);
                 totalHeights += redblackTree.Height;
             }
-
             return (double)totalHeights / NumberOfTimes;
         }
-
     }
 }
-
